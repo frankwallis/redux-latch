@@ -26,6 +26,8 @@
   "devDependencies": {
     "chai": "^3.4.1",
     "mocha": "^2.2.5",
+    "redux": "^3.5.2",
+    "redux-thunk": "^2.0.1",
     "ts-node": "^0.7.2",
     "typescript": "^1.8.10"
   },

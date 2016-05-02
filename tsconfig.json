@@ -9,6 +9,8 @@
    },
    "files": [
       "typings/main.d.ts",
+      "src/_references.d.ts",
+      "src/_augmenters.d.ts",
       "src/index.ts",
       "src/test.js"
    ]

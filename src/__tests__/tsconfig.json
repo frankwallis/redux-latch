@@ -3,10 +3,12 @@
 		"module": "commonjs",
 		"target": "es6",
 		"noLib": true,
-		"moduleResolution": "node"
+		"moduleResolution": "classic"
 	},
 	"files": [
 		"../../node_modules/typescript/lib/lib.es6.d.ts",
-		"../../typings/main.d.ts"
+		"../../typings/main.d.ts",
+      "../_references.d.ts",		
+      "../_augmenters.d.ts"
 	]
 }
