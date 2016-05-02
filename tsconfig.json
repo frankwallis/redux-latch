@@ -1,0 +1,15 @@
+{
+   "compileOnSave": true,
+   "compilerOptions": {
+      "module": "commonjs",
+      "target": "es5",
+      "moduleResolution": "node",
+      "outDir": "lib",
+      "allowJs": true
+   },
+   "files": [
+      "typings/main.d.ts",
+      "src/index.ts",
+      "src/test.js"
+   ]
+}

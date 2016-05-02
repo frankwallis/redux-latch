@@ -1,0 +1,38 @@
+{
+  "name": "redux-latch",
+  "version": "0.1.0",
+  "description": "Redux library for controlling action creator execution",
+  "jsnext:main": "src/index.js",
+  "main": "lib/index.js",
+  "homepage": "https://github.com/frankwallis/redux-latch",
+  "authors": [
+    "Frank Wallis"
+  ],
+  "keywords": [
+    "redux",
+    "react",
+    "action",
+    "concurrent",
+    "single",
+    "action-creators"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frankwallis/redux-latch.git"
+  },
+  "dependencies": {
+    "lodash": "^4.3.5"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "mocha": "^2.2.5",
+    "ts-node": "^0.7.2",
+    "typescript": "^1.8.10"
+  },
+  "scripts": {
+    "compile": "tsc",
+    "test": "mocha --harmony --harmony-destructuring --harmony_default_parameters --require ./src/__tests__/environment ./src/__tests__/*-tests.ts"
+  },
+  "bin": {},
+  "license": "MIT"
+}

@@ -1,0 +1,12 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es6",
+		"noLib": true,
+		"moduleResolution": "node"
+	},
+	"files": [
+		"../../node_modules/typescript/lib/lib.es6.d.ts",
+		"../../typings/main.d.ts"
+	]
+}
