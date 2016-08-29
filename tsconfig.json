@@ -6,8 +6,7 @@
       "moduleResolution": "node",
       "outDir": "lib",
       "lib": ["es6"],
-      "types": ["redux", "chai", "mocha"],
-      "allowJs": true
+      "types": ["redux", "chai", "mocha", "node"]
    },
    "files": [
       "src/index.ts"

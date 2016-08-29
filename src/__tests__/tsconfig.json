@@ -3,7 +3,7 @@
 		"module": "commonjs",
 		"target": "es6",
       "lib": ["es6"],
-      "types": ["chai", "mocha"],
+      "types": ["redux", "redux-thunk", "chai", "mocha", "node"],
       "moduleResolution": "node"
 	}
 }
