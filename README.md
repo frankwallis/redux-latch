@@ -6,11 +6,9 @@ Redux library for controlling action creator execution
 
 ## Overview ##
 
-A common pattern in Redux is to use flags to indicate that an action-creator is executing or has executed
-to prevent it running multiple times. redux-latch is a library to enable this to be handled declaratively.
+A common pattern in Redux is using flags to signal that an asynchronous action-creator is currently executing or has been executed, the flags are used to prevent action-creators running simultaneously or to prevent them from running multiple times. redux-latch provides a set of higher-order actions which enable you to handle these situations more declaratively.
 
-As an example say you have an action-creator which you want to only run once after the user has logged in, 
-it might look something like this:
+As an example say you have an action-creator which you want to only run once after the user has logged in, it might look something like this:
 
 ```
 function loadUserPermissions(username) {
@@ -31,32 +29,32 @@ function loadUserPermissions(username) {
 }
 ```
 
-With redux-latch you can remove the flags from the action-creator and the store:
+Using the ```runOnce``` higher-order action provided by redux-latch you can remove the ad-hoc flags from the store, and simplify the action-creator so that it simply performs the fetch:
 
 ```
 function loadUserPermissions(username) {
    return (dispatch, getState) => {      
-      fetchUserPermissions()
+      api.fetchUserPermissions()
          .then(permissions => {
             dispatch({ type: SET_USER_PERMISSIONS, payload: permissions });
          })
    }
 }
 ```
-and then get redux-latch to ensure that it only runs once:
+Calling ```runOnce``` on this action-creator will return a new action-creator which wraps the original and ensures that it only executes once.
 
 ```
 import {runOnce} from 'redux-latch';
 const ensureUserPermissions = runOnce(loadUserPermissions);    
 ```
 
-Then just use the ```ensureUserPermissions``` action-creator instead.
+Then just use the ```ensureUserPermissions``` action-creator to trigger the load instead. redux-latch maintains all of its state in the redux store, so isomorphism and time-travelling are both handled. 
 
 ## Usage ##
 
 Create the latch reducer:
 ```
-import {latchReducer} from 'redux-latch';
+import {createLatchReducer} from 'redux-latch';
 
 const combined = combineReducers({
    latches: createLatchReducer(),
@@ -65,4 +63,6 @@ const combined = combineReducers({
 });
 ```
 
-Then in your asynchronous action creators:  
+Then in your asynchronous action creators:
+
+## Higher-Order Actions ##

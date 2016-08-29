@@ -1,15 +1,9 @@
 import {expect} from 'chai'
 import {latchReducer, LatchState} from '../reducer'
-import {IStore as Store, IDispatch as Dispatch, createStore as reduxCreateStore, combineReducers, compose, applyMiddleware} from 'redux'
+import {Store, Dispatch, createStore as reduxCreateStore, combineReducers, compose, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk';
 
 import {runOnce} from '../index';
-
-// declare module "redux" {
-//   export interface Dispatch<TState> {
-//     <TResult>(asyncAction: (dispatch: Dispatch<TState>, getState: () => TState) => TResult): TResult;
-//   }
-// }
 
 interface GlobalState {
    calls: TestState;

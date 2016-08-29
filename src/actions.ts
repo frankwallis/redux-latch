@@ -18,7 +18,7 @@ export function IS_LATCH_ENTER(action: LatchAction<any>): action is LatchEnterAc
 }
 
 export function IS_LATCH_LEAVE(action: LatchAction<any>): action is LatchLeaveAction {
-   return action.type === "LATCH_LEAVE_ACTION";
+   return action.type === LATCH_LEAVE_ACTION;
 }
 
 export function enterLatch(name: string): LatchEnterAction {

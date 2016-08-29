@@ -5,13 +5,11 @@
       "target": "es5",
       "moduleResolution": "node",
       "outDir": "lib",
+      "lib": ["es6"],
+      "types": ["redux", "chai", "mocha"],
       "allowJs": true
    },
    "files": [
-      "typings/main.d.ts",
-      "src/_references.d.ts",
-      "src/_augmenters.d.ts",
-      "src/index.ts",
-      "src/test.js"
+      "src/index.ts"
    ]
 }
