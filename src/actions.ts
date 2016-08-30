@@ -3,9 +3,10 @@ const LATCH_LEAVE_ACTION = "LATCH_LEAVE_ACTION"
 
 interface LatchPayload {
    name: string;
+   keys: any[];
 }
 
-interface LatchAction<T extends LatchPayload> {
+export interface LatchAction<T extends LatchPayload> {
    type: string;
    payload: T;
 }
@@ -21,11 +22,11 @@ export function IS_LATCH_LEAVE(action: LatchAction<any>): action is LatchLeaveAc
    return action.type === LATCH_LEAVE_ACTION;
 }
 
-export function enterLatch(name: string): LatchEnterAction {
-   return { type: LATCH_ENTER_ACTION, payload: { name } };
+export function enterLatch(name: string, keys: any[]): LatchEnterAction {
+   return { type: LATCH_ENTER_ACTION, payload: { name, keys } };
 } 
 
-export function leaveLatch(name: string): LatchLeaveAction {
-   return { type: LATCH_LEAVE_ACTION, payload: { name } };
+export function leaveLatch(name: string, keys: any[]): LatchLeaveAction {
+   return { type: LATCH_LEAVE_ACTION, payload: { name, keys } };
 } 
 

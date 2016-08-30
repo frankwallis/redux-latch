@@ -1,41 +1,70 @@
-import {IS_LATCH_ENTER, IS_LATCH_LEAVE} from './actions'
+import {IS_LATCH_ENTER, IS_LATCH_LEAVE, LatchAction} from './actions'
+import {getLatchEntry} from './queries'
 
 export interface LatchEntry {
-   semaphore: number;
-   flag: boolean;
+   started: number;
+   completed: number;
+   lastStarted: Date;
+   lastCompleted: Date;
 }
 
-export type LatchState = { [latchId: string]: LatchEntry };
+export type LatchNode = LatchMap | LatchEntry
+export type LatchMap = { [latchId: string]: LatchNode };
+export type LatchState = LatchMap;
 
 const initialState = {} as LatchState;
+export const emptyLatch = {
+   started: 0,
+   completed: 0,
+   lastStarted: undefined,
+   lastCompleted: undefined
+}
 
-export function latchReducer(state: LatchState, action: any) {
+function updateLatch(state: LatchState, name: string, keys: any[], updater: (state: LatchEntry) => LatchEntry): LatchState {
+   return setLatch(state, [name].concat(keys), updater) as LatchMap;
+}
+
+function setLatch(state: LatchNode, keys: any[], updater: (state: LatchEntry) => LatchEntry): LatchNode {
+   //console.log(state);
+   //console.log(keys);
+   
+   if (keys.length === 0) {
+      state = state || emptyLatch; 
+      return updater(state as LatchEntry);
+   }
+   else {
+      const key = keys[0];
+      const result = Object.assign({}, state);
+      result[key] = setLatch(result[key], keys.slice(1), updater);
+      return result; 
+   }
+}
+
+export function latchReducer(state: LatchState, action: LatchAction<any>) {
    state = state || initialState;
    
    if (IS_LATCH_ENTER(action)) {
-      let entry = state[action.payload.name];
-      
-      if (entry) {
-         // TODO - assertion here.
-         entry = { semaphore: entry.semaphore + 1, flag: true };         
-      }
-      else {
-         entry = { semaphore: 1, flag: true };
-      }
-      const result = Object.assign({}, state);
-      result[action.payload.name] = entry;
-      return result;
+      return updateLatch(state, action.payload.name, action.payload.keys, (entry => {
+         return {
+            started: entry.started + 1,
+            completed: entry.completed,
+            lastStarted: new Date(),
+            lastCompleted: entry.lastCompleted
+         }
+      }));
    }
    else if (IS_LATCH_LEAVE(action)) {
-      let entry = state[action.payload.name];
-      if (!entry) throw new Error("Latch [" + action.payload.name + "] was not found");
-      if (entry.semaphore <= 0) throw new Error("Latch [" + action.payload.name + "] was released without being acquired");
-      entry = { semaphore: entry.semaphore - 1, flag: true };         
-      
-      const result = Object.assign({}, state);
-      result[action.payload.name] = entry;
-      return result;
-      
+      return updateLatch(state, action.payload.name, action.payload.keys, (entry => {
+         if (entry.completed >= entry.started)
+            throw new Error("Latch was completed without being started");
+
+         return {
+            started: entry.started,
+            completed: entry.completed + 1,
+            lastStarted: entry.lastStarted,
+            lastCompleted: new Date()
+         }
+      }));
    }
    else {
       return state;
