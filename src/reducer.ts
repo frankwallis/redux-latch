@@ -19,27 +19,10 @@ export const emptyLatch = {
    lastCompleted: undefined
 }
 
-function updateLatch(state: LatchState, name: string, keys: any[], updater: (state: LatchEntry) => LatchEntry): LatchState {
-   return setLatch(state, [name].concat(keys), updater) as LatchMap;
-}
-
-function setLatch(state: LatchNode, keys: any[], updater: (state: LatchEntry) => LatchEntry): LatchNode {
-   if (keys.length === 0) {
-      state = state || emptyLatch; 
-      return updater(state as LatchEntry);
-   }
-   else {
-      const key = keys[0];
-      const result = Object.assign({}, state);
-      result[key] = setLatch(result[key], keys.slice(1), updater);
-      return result; 
-   }
-}
-
 export function latchReducer(state: LatchState, action: LatchAction): LatchState {
    state = state || initialState;
-   
-   switch(action.type) {
+
+   switch (action.type) {
       case "LATCH_ENTER": {
          return updateLatch(state, action.payload.name, action.payload.keys, (entry => {
             return {
@@ -69,3 +52,19 @@ export function latchReducer(state: LatchState, action: LatchAction): LatchState
    }
 }
 
+function updateLatch(state: LatchState, name: string, keys: any[], updateFn: (state: LatchEntry) => LatchEntry): LatchState {
+   return setLatch(state, [name].concat(keys), updateFn) as LatchMap;
+}
+
+function setLatch(state: LatchNode, keys: any[], updateFn: (state: LatchEntry) => LatchEntry): LatchNode {
+   if (keys.length === 0) {
+      state = state || emptyLatch;
+      return updateFn(state as LatchEntry);
+   }
+   else {
+      const key = keys[0];
+      const result = Object.assign({}, state);
+      result[key] = setLatch(result[key], keys.slice(1), updateFn);
+      return result;
+   }
+}

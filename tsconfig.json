@@ -3,8 +3,16 @@
       "module": "commonjs",
       "target": "es5",
       "moduleResolution": "node",
-      "lib": ["es6"],
-      "types": ["redux", "chai", "mocha", "node"]
+      "outDir": "lib",
+      "lib": [
+         "es6"
+      ],
+      "types": [
+         "redux",
+         "chai",
+         "mocha",
+         "node"
+      ]
    },
    "files": [
       "src/index.ts"

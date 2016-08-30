@@ -3,4 +3,3 @@ require('ts-node').register({
    ignoreWarnings: [2341], // access private members
    disableWarnings: false
 });
- 

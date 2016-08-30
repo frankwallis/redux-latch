@@ -42,7 +42,7 @@
     "typescript": "^2.0.2"
   },
   "scripts": {
-    "compile": "tsc --module es6 --outDir ./es6 && tsc --module commonjs --outDir ./lib",
+    "compile": "tsc && tsc --module es6 --outDir ./es6",
     "test": "mocha --require ./src/__tests__/environment ./src/__tests__/*-tests.ts"
   },
   "bin": {},

@@ -5,7 +5,7 @@ import thunk from 'redux-thunk';
 interface GlobalState {
    calls: TestState;
    latches: LatchState;
-} 
+}
 
 export function createMockStore(): Store<GlobalState> {
    /* combine all our reducers into a single function */
@@ -16,13 +16,13 @@ export function createMockStore(): Store<GlobalState> {
 
    /* generate a createStore method by composing the middleware functions we need */
    const finalCreateStore = compose(applyMiddleware(thunk))(createStore);
-   
+
    /* create the store */
    return finalCreateStore(reducer, {}) as any as Store<GlobalState>;
 }
 
 type TestState = Array<{ arg1: string, arg2: number }>
- 
+
 function testReducer(state: TestState = [], action: any) {
    if (action.type === "TEST_ACTION")
       return state.concat(action.payload);
@@ -37,6 +37,6 @@ export function testSyncActionCreator(arg1: string, arg2: number) {
 export function testAsyncActionCreator(arg1: string, arg2: number) {
    return function (dispatch: Function, getState: () => GlobalState) {
       dispatch(testSyncActionCreator(arg1, arg2));
-      return 'testAsyncActionCreatorResult';         
-   }   
+      return 'testAsyncActionCreatorResult';
+   }
 }
