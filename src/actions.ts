@@ -1,32 +1,25 @@
-const LATCH_ENTER_ACTION = "LATCH_ENTER_ACTION"
-const LATCH_LEAVE_ACTION = "LATCH_LEAVE_ACTION"
-
 interface LatchPayload {
    name: string;
    keys: any[];
 }
 
-export interface LatchAction<T extends LatchPayload> {
-   type: string;
-   payload: T;
+interface LatchEnterAction {
+    type: "LATCH_ENTER";
+    payload: LatchPayload;
 }
 
-interface LatchEnterAction extends LatchAction<LatchPayload> {}
-interface LatchLeaveAction extends LatchAction<LatchPayload> {}
-
-export function IS_LATCH_ENTER(action: LatchAction<any>): action is LatchEnterAction {
-   return action.type === LATCH_ENTER_ACTION;
+interface LatchLeaveAction {
+    type: "LATCH_LEAVE";
+    payload: LatchPayload;
 }
 
-export function IS_LATCH_LEAVE(action: LatchAction<any>): action is LatchLeaveAction {
-   return action.type === LATCH_LEAVE_ACTION;
-}
+export type LatchAction = LatchEnterAction | LatchLeaveAction
 
 export function enterLatch(name: string, keys: any[]): LatchEnterAction {
-   return { type: LATCH_ENTER_ACTION, payload: { name, keys } };
+   return { type: "LATCH_ENTER", payload: { name, keys } };
 } 
 
 export function leaveLatch(name: string, keys: any[]): LatchLeaveAction {
-   return { type: LATCH_LEAVE_ACTION, payload: { name, keys } };
+   return { type: "LATCH_LEAVE", payload: { name, keys } };
 } 
 

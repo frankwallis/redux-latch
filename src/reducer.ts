@@ -1,4 +1,4 @@
-import {IS_LATCH_ENTER, IS_LATCH_LEAVE, LatchAction} from './actions'
+import {LatchAction} from './actions'
 import {getLatchEntry} from './queries'
 
 export interface LatchEntry {
@@ -25,9 +25,6 @@ function updateLatch(state: LatchState, name: string, keys: any[], updater: (sta
 }
 
 function setLatch(state: LatchNode, keys: any[], updater: (state: LatchEntry) => LatchEntry): LatchNode {
-   //console.log(state);
-   //console.log(keys);
-   
    if (keys.length === 0) {
       state = state || emptyLatch; 
       return updater(state as LatchEntry);
@@ -40,34 +37,36 @@ function setLatch(state: LatchNode, keys: any[], updater: (state: LatchEntry) =>
    }
 }
 
-export function latchReducer(state: LatchState, action: LatchAction<any>) {
+export function latchReducer(state: LatchState, action: LatchAction): LatchState {
    state = state || initialState;
    
-   if (IS_LATCH_ENTER(action)) {
-      return updateLatch(state, action.payload.name, action.payload.keys, (entry => {
-         return {
-            started: entry.started + 1,
-            completed: entry.completed,
-            lastStarted: new Date(),
-            lastCompleted: entry.lastCompleted
-         }
-      }));
-   }
-   else if (IS_LATCH_LEAVE(action)) {
-      return updateLatch(state, action.payload.name, action.payload.keys, (entry => {
-         if (entry.completed >= entry.started)
-            throw new Error("Latch was completed without being started");
+   switch(action.type) {
+      case "LATCH_ENTER": {
+         return updateLatch(state, action.payload.name, action.payload.keys, (entry => {
+            return {
+               started: entry.started + 1,
+               completed: entry.completed,
+               lastStarted: new Date(),
+               lastCompleted: entry.lastCompleted
+            }
+         }));
+      }
+      case "LATCH_LEAVE": {
+         return updateLatch(state, action.payload.name, action.payload.keys, (entry => {
+            if (entry.completed >= entry.started)
+               throw new Error("Latch was completed without being started");
 
-         return {
-            started: entry.started,
-            completed: entry.completed + 1,
-            lastStarted: entry.lastStarted,
-            lastCompleted: new Date()
-         }
-      }));
-   }
-   else {
-      return state;
+            return {
+               started: entry.started,
+               completed: entry.completed + 1,
+               lastStarted: entry.lastStarted,
+               lastCompleted: new Date()
+            }
+         }));
+      }
+      default: {
+         return state;
+      }
    }
 }
 

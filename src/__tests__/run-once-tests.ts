@@ -67,5 +67,40 @@ describe('Action Enhancers', () => {
          expect(store.getState().calls[0].arg2).to.be.equal(80);
       });
 
+      it('uses key selector to get the keys', async () => {
+         const store = createMockStore();
+         const runOnceActionCreator = runOnce(testAsyncActionCreator, {
+            name: 'testLatch',
+            keySelector: (...args) => args
+         });         
+
+         const runOnceAction = runOnceActionCreator('london', 80)
+         await store.dispatch(runOnceAction);
+       
+         expect(store.getState().calls).to.have.length(1);
+         expect(store.getState().calls[0].arg1).to.be.equal('london');
+         expect(store.getState().calls[0].arg2).to.be.equal(80);
+         
+         const runOnceAction2 = runOnceActionCreator('london', 80)
+         await store.dispatch(runOnceAction2);
+         
+         expect(store.getState().calls).to.have.length(1);
+         expect(store.getState().calls[0].arg1).to.be.equal('london');
+         expect(store.getState().calls[0].arg2).to.be.equal(80);
+
+         const runOnceAction3 = runOnceActionCreator('madrid', 80)
+         await store.dispatch(runOnceAction3);
+         
+         expect(store.getState().calls).to.have.length(2);
+         expect(store.getState().calls[1].arg1).to.be.equal('madrid');
+         expect(store.getState().calls[1].arg2).to.be.equal(80);
+
+         const runOnceAction4 = runOnceActionCreator('london', 85)
+         await store.dispatch(runOnceAction4);
+         
+         expect(store.getState().calls).to.have.length(3);
+         expect(store.getState().calls[2].arg1).to.be.equal('london');
+         expect(store.getState().calls[2].arg2).to.be.equal(85);
+      });
    });   
 });

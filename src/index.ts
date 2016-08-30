@@ -6,10 +6,9 @@ type CanExecutePredicate<TOptions> = (entry: LatchEntry, options: TOptions) => b
 
 interface LatchOptions {
    name: string;
-   keys: any[];
-   canExecute: CanExecutePredicate<this>;
-   stateSelector: (state: any) => LatchState;
-   keySelector?: (...args) => any;
+   canExecute?: CanExecutePredicate<this>;
+   stateSelector?: (state: any) => LatchState;
+   keySelector?: (...args) => any[];
 }
 
 function createLatch<TOptions extends LatchOptions>(actionCreator: Function, options: LatchOptions): Function {

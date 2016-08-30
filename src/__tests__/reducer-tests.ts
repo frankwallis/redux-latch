@@ -24,7 +24,7 @@ describe('latchReducer', () => {
       let entry = getLatchEntry(state, 'latch1', []);
       expect(entry.started).to.equal(1);
       expect(entry.completed).to.equal(0);
-      
+
       state = latchReducer(state, enterLatch('latch1', []));
       entry = getLatchEntry(state, 'latch1', []);
       expect(entry.started).to.equal(2);
@@ -37,7 +37,7 @@ describe('latchReducer', () => {
       let entry = getLatchEntry(state, 'latch1', []);
       expect(entry.started).to.equal(1);
       expect(entry.completed).to.equal(1);
-      
+
       state = latchReducer(state, enterLatch('latch1', []));
       state = latchReducer(state, leaveLatch('latch1', []));
       entry = getLatchEntry(state, 'latch1', []);
@@ -49,11 +49,29 @@ describe('latchReducer', () => {
       let state = latchReducer(undefined, enterLatch('latch1', []));
       let entry = getLatchEntry(state, 'latch1', []);
       expect(entry.started).to.equal(1);
-      
+
       state = latchReducer(state, leaveLatch('latch1', []));
       entry = getLatchEntry(state, 'latch1', []);
       expect(entry.completed).to.equal(entry.started);
       expect(() => latchReducer(state, leaveLatch('latch1', []))).to.throw();
    });
-      
+
+   describe("keys", () => {
+      it('creates latch under string and number keys', () => {
+         const state = latchReducer(undefined, enterLatch('latch1', ['key1', 42]));
+         expect(getLatchEntry(state, 'latch1', ['key1', 42])).to.not.be.undefined;
+      });
+
+      it('increments started when using string and number keys', () => {
+         let state = latchReducer(undefined, enterLatch('latch1', [21, 'secret']));
+         let entry = getLatchEntry(state, 'latch1', [21, "secret"]);
+         expect(entry.started).to.equal(1);
+         expect(entry.completed).to.equal(0);
+
+         state = latchReducer(state, enterLatch('latch1', [21, 'secret']));
+         entry = getLatchEntry(state, 'latch1', [21, 'secret']);
+         expect(entry.started).to.equal(2);
+         expect(entry.completed).to.equal(0);
+      });
+   })
 });
