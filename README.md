@@ -10,7 +10,7 @@ A common pattern in Redux is using flags to signal that an asynchronous action-c
 
 As an example say you have an action-creator which you want to only run once after the user has logged in, it might look something like this:
 
-```
+```ts
 function loadUserPermissions(username) {
    return (dispatch, getState) => {
       const userStore = getState().userStore;
@@ -31,7 +31,7 @@ function loadUserPermissions(username) {
 
 Using the ```runOnce``` higher-order action provided by redux-latch you can remove the ad-hoc flags from the store, and simplify the action-creator so that it simply performs the fetch:
 
-```
+```ts
 function loadUserPermissions(username) {
    return (dispatch, getState) => {      
       api.fetchUserPermissions()
@@ -43,7 +43,7 @@ function loadUserPermissions(username) {
 ```
 Calling ```runOnce``` on this action-creator will return a new action-creator which wraps the original and ensures that it is only ever executed once.
 
-```
+```ts
 import {runOnce} from 'redux-latch';
 const ensureUserPermissions = runOnce(loadUserPermissions);    
 ```
@@ -54,7 +54,7 @@ Then in your code, just use the ```ensureUserPermissions``` action-creator to tr
 
 You need to initialise the latch reducer where redux-latch will hold its state, by default redux-latch will expect this to be located at ```state.latches```, however this can be overridden.
 
-```
+```ts
 import {latchReducer} from 'redux-latch';
 
 const combined = combineReducers({
@@ -69,7 +69,7 @@ redux-latch also depends on the [redux-thunk](https://github.com/gaearon/redux-t
 ## Higher-Order Actions ##
 
 #### runOnce ####
------------------
+
 Will enhance the action-creator so that it is only ever executed once:
 
 ```ts
