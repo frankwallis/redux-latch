@@ -26,6 +26,7 @@
   "devDependencies": {
     "@types/chai": "^3.4.32",
     "@types/mocha": "^2.2.31",
+    "@types/node": "^6.0.38",
     "@types/redux": "^3.5.28",
     "@types/redux-thunk": "^2.1.30",
     "chai": "^3.4.1",
