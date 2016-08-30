@@ -76,7 +76,7 @@ Will enhance the action-creator so that it is only ever executed once:
 function runOnce<T extends Function>(actionCreator: T, options?: RunOnceOptions): T;
 
 interface RunOnceOptions {
-   name: string;
+   displayName?: string;
    stateSelector?: (state: any) => LatchState;
    keySelector?: (...args) => any[];
 }
