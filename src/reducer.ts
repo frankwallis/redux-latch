@@ -1,5 +1,4 @@
 import {LatchAction} from './actions'
-import {getLatchEntry} from './queries'
 
 export interface LatchEntry {
    started: number;

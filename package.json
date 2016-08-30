@@ -1,8 +1,8 @@
 {
   "name": "redux-latch",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Redux library for controlling action creator execution",
-  "jsnext:main": "lib/index.js",
+  "jsnext:main": "es6/index.js",
   "main": "lib/index.js",
   "homepage": "https://github.com/frankwallis/redux-latch",
   "authors": [
@@ -43,7 +43,7 @@
     "typescript": "^2.0.0"
   },
   "scripts": {
-    "compile": "tsc",
+    "compile": "tsc --module es6 --outDir ./es6 && tsc --module commonjs --outDir ./lib",
     "test": "mocha --require ./src/__tests__/environment ./src/__tests__/*-tests.ts"
   },
   "bin": {},
