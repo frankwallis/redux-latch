@@ -26,7 +26,7 @@ function createLatch<T extends Function>(actionCreator: T, options: LatchOptions
          if (options.canExecute(entry, options)) {
             dispatch(enterLatch(options.displayName, keys));
 
-            return Promise.resolve(dispatch(actionCreator.apply(null, args)))
+            return Promise.resolve(dispatch(actionCreator(...args)))
                .then(acResult => {
                   dispatch(leaveLatch(options.displayName, keys))
                   return acResult;

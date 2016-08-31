@@ -29,6 +29,7 @@
     "redux-thunk": "*"
   },
   "devDependencies": {
+    "@types/assertion-error": "^1.0.29",
     "@types/chai": "^3.4.32",
     "@types/mocha": "^2.2.31",
     "@types/node": "^6.0.38",

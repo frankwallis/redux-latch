@@ -1,6 +1,6 @@
 import {latchReducer, LatchState} from '../reducer'
 import {Store, Dispatch, createStore, combineReducers, compose, applyMiddleware} from 'redux'
-import thunk from 'redux-thunk';
+import thunk from 'redux-thunk'
 
 interface GlobalState {
    calls: TestState;

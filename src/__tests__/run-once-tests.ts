@@ -1,7 +1,6 @@
 import {expect} from 'chai'
 import {createMockStore, testSyncActionCreator, testAsyncActionCreator} from './mock-store'
-
-import {runOnce} from '../index';
+import {runOnce} from '../index'
 
 describe('Action Enhancers', () => {
    describe('runOnce', () => {

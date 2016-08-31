@@ -1,20 +1,24 @@
 {
-   "compilerOptions": {
-      "module": "commonjs",
-      "target": "es5",
-      "moduleResolution": "node",
-      "outDir": "lib",
-      "lib": [
-         "es6"
-      ],
-      "types": [
-         "redux",
-         "chai",
-         "mocha",
-         "node"
-      ]
-   },
-   "files": [
-      "src/index.ts"
-   ]
+	"compilerOptions": {
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"noImplicitThis": true,
+		"noUnusedLocals": true,
+		"target": "es5",
+		"outDir": "lib",
+		"lib": [
+			"es2015"
+		],
+		"types": [
+			"chai",
+			"assertion-error",
+			"mocha",
+			"node",
+			"redux",
+			"redux-thunk"
+		]
+	},
+	"files": [
+		"src/index.ts"
+	]
 }

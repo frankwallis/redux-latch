@@ -1,6 +1,6 @@
 redux-latch
 ============================
-A Redux library for restricting and synchronising action creator execution
+A Redux library for restricting and synchronising action-creator execution
 
 [![build status](https://secure.travis-ci.org/frankwallis/redux-latch.png?branch=master)](http://travis-ci.org/frankwallis/redux-latch)
 
