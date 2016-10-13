@@ -41,11 +41,11 @@ function loadUserPermissions(username) {
    }
 }
 ```
-Calling ```runOnce``` on this action-creator will return a new action-creator which wraps the original and ensures that it is only ever executed once.
+Calling ```createEnsure``` on this action-creator will return a new action-creator which wraps the original and ensures that it is only ever executed once.
 
 ```ts
-import {runOnce} from 'redux-latch';
-const ensureUserPermissions = runOnce(loadUserPermissions);    
+import {createEnsure} from 'redux-latch';
+const ensureUserPermissions = createEnsure(loadUserPermissions);    
 ```
 
 Then in your code, just use the ```ensureUserPermissions``` action-creator to trigger the fetch instead. redux-latch maintains all of its state inside the redux store, so isomorphism and time-travelling are both handled. 
@@ -68,17 +68,27 @@ redux-latch also depends on the [redux-thunk](https://github.com/gaearon/redux-t
 
 ## Higher-Order Actions ##
 
-#### runOnce ####
+#### createLatch ####
 
-Will enhance the action-creator so that it is only ever executed once:
+Will enhance the action-creator so that it is never called more than N times. You can also specify the number of concurrent exections allowed. The function returns a ```Latch``` object with an ```execute``` method to trigger the action-creator and an ```invalidate``` method to reset the latch.
 
 ```ts
-function runOnce<T extends Function>(actionCreator: T, options?: RunOnceOptions): T;
+function createLatch(actionCreator: ActionCreator, options?: LatchOptions): Latch;
 
-interface RunOnceOptions {
+interface Latch {
+	execute: ActionCreator;
+	invalidate: (...args) => void;
+}
+
+interface LatchOptions {
    displayName?: string;
    stateSelector?: (state: any) => LatchState;
    keySelector?: (...args) => any[];
+	max?: number;
+	maxConcurrent?: number;
 }
 ```
 
+#### createEnsure ####
+
+Just returns the execute methods of the latch. Useful if you never want to call ```invalidate```.

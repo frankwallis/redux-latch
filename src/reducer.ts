@@ -1,10 +1,10 @@
-import {LatchAction} from './actions'
+import { LatchAction } from './actions'
 
 export interface LatchEntry {
-   started: number;
-   completed: number;
-   lastStarted: Date;
-   lastCompleted: Date;
+	started: number;
+	completed: number;
+	lastStarted: Date;
+	lastCompleted: Date;
 }
 
 export type LatchNode = LatchMap | LatchEntry
@@ -13,58 +13,58 @@ export type LatchState = LatchMap;
 
 const initialState = {} as LatchState;
 export const emptyLatch = {
-   started: 0,
-   completed: 0,
-   lastStarted: undefined,
-   lastCompleted: undefined
+	started: 0,
+	completed: 0,
+	lastStarted: undefined,
+	lastCompleted: undefined
 }
 
 export function latchReducer(state: LatchState, action: LatchAction): LatchState {
-   state = state || initialState;
+	state = state || initialState;
 
-   switch (action.type) {
-      case "LATCH_ENTER": {
-         return updateLatch(state, action.payload.name, action.payload.keys, (entry => {
-            return {
-               started: entry.started + 1,
-               completed: entry.completed,
-               lastStarted: new Date(),
-               lastCompleted: entry.lastCompleted
-            }
-         }));
-      }
-      case "LATCH_LEAVE": {
-         return updateLatch(state, action.payload.name, action.payload.keys, (entry => {
-            if (entry.completed >= entry.started)
-               throw new Error("Latch was completed without being started");
+	switch (action.type) {
+		case "LATCH_ENTER": {
+			return updateLatch(state, action.payload.name, action.payload.keys, (entry => {
+				return {
+					started: entry.started + 1,
+					completed: entry.completed,
+					lastStarted: new Date(),
+					lastCompleted: entry.lastCompleted
+				}
+			}));
+		}
+		case "LATCH_LEAVE": {
+			return updateLatch(state, action.payload.name, action.payload.keys, (entry => {
+				if (entry.completed >= entry.started)
+					throw new Error("Latch was completed without being started");
 
-            return {
-               started: entry.started,
-               completed: entry.completed + 1,
-               lastStarted: entry.lastStarted,
-               lastCompleted: new Date()
-            }
-         }));
-      }
-      default: {
-         return state;
-      }
-   }
+				return {
+					started: entry.started,
+					completed: entry.completed + 1,
+					lastStarted: entry.lastStarted,
+					lastCompleted: new Date()
+				}
+			}));
+		}
+		default: {
+			return state;
+		}
+	}
 }
 
 function updateLatch(state: LatchState, name: string, keys: any[], updateFn: (state: LatchEntry) => LatchEntry): LatchState {
-   return setLatch(state, [name].concat(keys), updateFn) as LatchMap;
+	return setLatch(state, [name].concat(keys), updateFn) as LatchMap;
 }
 
 function setLatch(state: LatchNode, keys: any[], updateFn: (state: LatchEntry) => LatchEntry): LatchNode {
-   if (keys.length === 0) {
-      state = state || emptyLatch;
-      return updateFn(state as LatchEntry);
-   }
-   else {
-      const key = keys[0];
-      const result = Object.assign({}, state);
-      result[key] = setLatch(result[key], keys.slice(1), updateFn);
-      return result;
-   }
+	if (keys.length === 0) {
+		state = state || emptyLatch;
+		return updateFn(state as LatchEntry);
+	}
+	else {
+		const key = keys[0];
+		const result = Object.assign({}, state);
+		result[key] = setLatch(result[key], keys.slice(1), updateFn);
+		return result;
+	}
 }
