@@ -29,7 +29,7 @@ function loadUserPermissions(username) {
 }
 ```
 
-Using the ```runOnce``` higher-order action provided by redux-latch you can remove the ad-hoc flags from the store, and simplify the action-creator so that it simply performs the fetch:
+Using the ```createEnsure``` higher-order action provided by redux-latch you can remove the ad-hoc flags from the store, and simplify the action-creator so that it simply performs the fetch:
 
 ```ts
 function loadUserPermissions(username) {
@@ -41,10 +41,10 @@ function loadUserPermissions(username) {
    }
 }
 ```
-Calling ```createEnsure``` on this action-creator will return a new action-creator which wraps the original and ensures that it is only ever executed once.
+Calling ```createEnsure``` on *this* action-creator will return *a new* action-creator which wraps the original and ensures that it is only ever executed once.
 
 ```ts
-import {createEnsure} from 'redux-latch';
+import { createEnsure } from 'redux-latch';
 const ensureUserPermissions = createEnsure(loadUserPermissions);    
 ```
 
@@ -84,8 +84,8 @@ interface LatchOptions {
    displayName?: string;
    stateSelector?: (state: any) => LatchState;
    keySelector?: (...args) => any[];
-	max?: number;
-	maxConcurrent?: number;
+   max?: number;
+   maxConcurrent?: number;
 }
 ```
 
