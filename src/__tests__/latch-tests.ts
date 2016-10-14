@@ -3,7 +3,7 @@ import { createMockStore, testSyncActionCreator, testAsyncActionCreator } from '
 import { createEnsure } from '../index'
 
 describe('Action Enhancers', () => {
-	describe('runOnce', () => {
+	describe('createEnsure', () => {
 		it('passes the correct arguments to underlying sync action', async () => {
 			const store = createMockStore();
 			const runOnceActionCreator = createEnsure(testSyncActionCreator);
@@ -89,19 +89,19 @@ describe('Action Enhancers', () => {
 			expect(store.getState().calls[0].arg2).to.be.equal(80);
 		});
 
-		it('defaults displayName to "latch_[epochtime]"', async () => {
+		it('uses the function name as the state key', async () => {
 			const store = createMockStore();
-			const runOnceActionCreator = createEnsure(testAsyncActionCreator)
+			const runOnceActionCreator = createEnsure(testSyncActionCreator);
 
 			const runOnceAction = runOnceActionCreator('london', 80)
 			await store.dispatch(runOnceAction);
-			const latchNames = Object.keys(store.getState().latches);
 
+			const latchNames = Object.keys(store.getState().latches);
 			expect(latchNames).to.have.length(1);
-			expect(latchNames[0].indexOf('latch_')).to.equal(0);
+			expect(latchNames[0]).to.equal('testSyncActionCreator');
 		});
 
-		it('uses displayName to name the latch', async () => {
+		it('uses displayName to name the latch if provided', async () => {
 			const store = createMockStore();
 			const runOnceActionCreator = createEnsure(testAsyncActionCreator, {
 				displayName: 'testLatchName1'
@@ -111,7 +111,7 @@ describe('Action Enhancers', () => {
 			const latchNames = Object.keys(store.getState().latches);
 
 			expect(latchNames).to.have.length(1);
-			expect(latchNames[0].indexOf('testLatchName1_')).to.equal(0);
+			expect(latchNames[0]).to.equal('testLatchName1');
 		});
 
 		it('uses key selector to get the keys', async () => {

@@ -23,8 +23,7 @@ export function createLatch<R, S>(actionCreator: AsyncActionCreator<R, S>, optio
 export function createLatch<R>(actionCreator: SyncActionCreator<R>, options?: LatchOptions): LatchedFunction<R, any>
 export function createLatch<R, S>(actionCreator: any, options?: LatchOptions): LatchedFunction<R, S> {
 	options = options || {};
-	const namePrefix = options.displayName || (actionCreator as any).displayName || 'latch';
-	options.displayName = namePrefix + '_' + new Date().getTime();
+	options.displayName = options.displayName || actionCreator.name;
 	options.stateSelector = options.stateSelector || (state => state.latches);
 	options.keySelector = options.keySelector || ((...args) => []);
 	options.max = options.max || 1;

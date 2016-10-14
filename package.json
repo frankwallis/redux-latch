@@ -1,6 +1,6 @@
 {
   "name": "redux-latch",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Redux library for controlling action creator execution",
   "jsnext:main": "es6/index.js",
   "main": "lib/index.js",
